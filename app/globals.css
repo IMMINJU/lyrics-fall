@@ -70,7 +70,7 @@ body {
   overflow: hidden;
   font-family: var(--font-sans);
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
 }
 
 /* Scrollbar */
