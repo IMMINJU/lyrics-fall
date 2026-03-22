@@ -80,7 +80,7 @@ export default function StepPlaying({ videoId, lrcLines, lrcId, songLabel, onBac
         onClick={handleBack}
         className="fixed top-5 left-5 z-10 text-sm font-black text-text-primary tracking-wide cursor-pointer bg-transparent border-none font-[inherit] opacity-60 hover:opacity-100 transition-opacity"
       >
-        Lyrics Visualizer
+        LyricFall
       </button>
       <div className="fixed top-5 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 bg-badge-bg text-pill-text rounded-xl text-xs backdrop-blur-lg">
         {songLabel} · {badgeText}

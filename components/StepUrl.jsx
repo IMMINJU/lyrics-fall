@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const EXAMPLES = [
   { label: 'Eminem — Rap God', url: 'https://www.youtube.com/watch?v=XbGs_qK2PQA' },
-  { label: 'Billie Eilish — Birds of a Feather', url: 'https://www.youtube.com/watch?v=0rl-0RRnaNs' },
+  { label: 'Billie Eilish — Birds of a Feather', url: 'https://www.youtube.com/watch?v=d5gf9dXbPi0' },
   { label: 'Adele — Someone Like You', url: 'https://www.youtube.com/watch?v=hLQl3WQQoQ0' },
 ];
 
@@ -66,7 +66,7 @@ export default function StepUrl({ onNext }) {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg z-50 gap-5">
-      <h1 className="text-xl font-black text-text-primary tracking-wide">Lyrics Visualizer</h1>
+      <h1 className="text-xl font-black text-text-primary tracking-wide">LyricFall</h1>
       <p className="text-text-secondary text-sm text-center leading-relaxed max-w-[460px]">
         Enter a YouTube link and search for synced lyrics to visualize them in real-time
       </p>

@@ -1,4 +1,4 @@
-# Lyrics Visualizer
+# LyricFall
 
 Watch synced lyrics fall with real-time physics animation. Paste any YouTube link, search for synced lyrics, and see words come alive.
 
