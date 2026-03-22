@@ -39,27 +39,29 @@ export default function StepUrl({ onNext }) {
   const [status, setStatus] = useState('');
   const [statusError, setStatusError] = useState(false);
 
-  const handleNext = async () => {
-    const vid = extractVideoId(url.trim());
+  const handleNext = (overrideUrl) => {
+    const target = overrideUrl || url.trim();
+    const vid = extractVideoId(target);
     if (!vid) { setStatus('Invalid YouTube URL'); setStatusError(true); return; }
     setStatus('');
     setStatusError(false);
 
-    let videoTitle = '';
-    let artist = '';
-    let track = '';
-    try {
-      const res = await fetch(`/api/video-info/${vid}`);
-      const info = await res.json();
-      if (info.ok) {
-        videoTitle = info.title;
-        const parsed = parseYouTubeTitle(info.title);
-        artist = parsed.artist;
-        track = parsed.track;
-      }
-    } catch {}
-
-    onNext({ videoId: vid, videoTitle, artist, track });
+    (async () => {
+      let videoTitle = '';
+      let artist = '';
+      let track = '';
+      try {
+        const res = await fetch(`/api/video-info/${vid}`);
+        const info = await res.json();
+        if (info.ok) {
+          videoTitle = info.title;
+          const parsed = parseYouTubeTitle(info.title);
+          artist = parsed.artist;
+          track = parsed.track;
+        }
+      } catch {}
+      onNext({ videoId: vid, videoTitle, artist, track });
+    })();
   };
 
   return (
@@ -73,10 +75,10 @@ export default function StepUrl({ onNext }) {
           className="flex-1 px-5 py-3.5 text-sm border-2 border-border rounded-lg outline-none bg-surface font-[inherit] transition-colors focus:border-border-focus"
           value={url}
           onChange={e => setUrl(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleNext()}
+          onKeyDown={e => e.key === 'Enter' && handleNext(null)}
           placeholder="Paste YouTube URL..."
         />
-        <button className="px-7 py-3.5 text-sm bg-pill-bg text-pill-text border-none rounded-lg cursor-pointer font-bold font-[inherit] transition-all hover:opacity-80" onClick={handleNext}>
+        <button className="px-7 py-3.5 text-sm bg-pill-bg text-pill-text border-none rounded-lg cursor-pointer font-bold font-[inherit] transition-all hover:opacity-80" onClick={() => handleNext(null)}>
           Next →
         </button>
       </div>
@@ -87,7 +89,7 @@ export default function StepUrl({ onNext }) {
         {EXAMPLES.map(ex => (
           <button key={ex.url}
             className="px-3.5 py-1.5 bg-text-primary/5 border-none rounded-xl text-xs text-text-secondary cursor-pointer font-[inherit] transition-all hover:bg-text-primary/10 hover:text-text-primary"
-            onClick={() => setUrl(ex.url)}>
+            onClick={() => { setUrl(ex.url); handleNext(ex.url); }}>
             {ex.label}
           </button>
         ))}
