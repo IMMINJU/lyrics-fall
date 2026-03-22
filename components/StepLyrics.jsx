@@ -65,8 +65,8 @@ export default function StepLyrics({ videoTitle, defaultArtist, defaultTrack, on
       <h1 className="text-xl font-black text-text-primary tracking-wide">Find Lyrics</h1>
       {videoTitle && <p className="text-text-secondary text-xs">YouTube: {videoTitle}</p>}
 
-      <div className="w-[var(--width-form)]">
-        <div className="flex gap-2">
+      <div className="w-full max-w-[560px] px-4">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="flex-1 flex flex-col gap-1">
             <label className="text-xs font-bold text-text-secondary">Track title</label>
             <input className="px-4 py-3 border-2 border-border rounded-md text-sm outline-none font-[inherit] bg-surface focus:border-border-focus"
@@ -81,7 +81,7 @@ export default function StepLyrics({ videoTitle, defaultArtist, defaultTrack, on
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
               placeholder="e.g. JENNIE, Doechii" />
           </div>
-          <button className="self-end px-6 py-3 text-sm bg-pill-bg text-pill-text border-none rounded-md cursor-pointer font-bold font-[inherit] transition-all hover:opacity-80"
+          <button className="sm:self-end px-6 py-3 text-sm bg-pill-bg text-pill-text border-none rounded-md cursor-pointer font-bold font-[inherit] transition-all hover:opacity-80"
             onClick={handleSearch}>
             Search
           </button>
@@ -90,7 +90,7 @@ export default function StepLyrics({ videoTitle, defaultArtist, defaultTrack, on
 
       {searchStatus && <span className="text-xs text-text-secondary">{searchStatus}</span>}
 
-      <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto w-[var(--width-form)] scrollbar-thin">
+      <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto w-full max-w-[560px] px-4 scrollbar-thin">
         {searchResults.map((r, i) => {
           const isExpanded = expandedResult === i;
           const previewText = r.syncedLyrics
@@ -128,14 +128,14 @@ export default function StepLyrics({ videoTitle, defaultArtist, defaultTrack, on
         })}
       </div>
 
-      <div className="text-center text-text-muted text-xs py-1 w-[var(--width-form)]">— or paste LRC lyrics directly —</div>
+      <div className="text-center text-text-muted text-xs py-1 w-full max-w-[560px] px-4">— or paste LRC lyrics directly —</div>
 
       <textarea
-        className="w-[var(--width-form)] h-24 p-3 border-2 border-border rounded-lg text-xs font-mono resize-y outline-none bg-surface focus:border-border-focus scrollbar-thin"
+        className="w-full max-w-[560px] px-4 h-24 p-3 border-2 border-border rounded-lg text-xs font-mono resize-y outline-none bg-surface focus:border-border-focus scrollbar-thin"
         value={lrcText} onChange={e => setLrcText(e.target.value)}
         placeholder={'[00:12.34] First line of lyrics\n[00:15.67] Second line\n...'} />
 
-      <div className="flex gap-2 w-[var(--width-form)] justify-between">
+      <div className="flex gap-2 w-full max-w-[560px] px-4 justify-between">
         <button className="px-7 py-3.5 text-sm bg-transparent text-text-primary border-2 border-border rounded-lg cursor-pointer font-bold font-[inherit] transition-all hover:border-border-focus"
           onClick={onBack}>
           ← Back

@@ -70,7 +70,7 @@ export default function StepUrl({ onNext }) {
       <p className="text-text-secondary text-sm text-center leading-relaxed max-w-[460px]">
         Enter a YouTube link and search for synced lyrics to visualize them in real-time
       </p>
-      <div className="flex gap-2 w-[var(--width-url)]">
+      <div className="flex gap-2 w-full max-w-[520px] px-4">
         <input
           className="flex-1 px-5 py-3.5 text-sm border-2 border-border rounded-lg outline-none bg-surface font-[inherit] transition-colors focus:border-border-focus"
           value={url}

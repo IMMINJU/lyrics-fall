@@ -174,42 +174,61 @@ export default function PhysicsCanvas({ lrcLines, getCurrentTime, isPlaying, syn
       const { W, H } = sizeRef.current;
       const centerY = H * 0.32;
       const gap = 8;
+      const lineGap = 12;
+      const maxLineW = W * 0.85;
       const now = performance.now();
       const pinned = pinnedWordsRef.current;
       if (pinned.length === 0) return;
 
-      const totalW = pinned.reduce((sum, pw) => sum + pw.bw, 0) + (pinned.length - 1) * gap;
-      let x = W / 2 - totalW / 2;
-
+      // Break into rows that fit within maxLineW
+      const rows = [[]];
+      let rowW = 0;
       for (const pw of pinned) {
-        const targetX = x + pw.bw / 2;
-        const age = (now - pw.appearedAt) / 1000;
-        const entranceDuration = 0.35;
-
-        if (age < entranceDuration) {
-          // Animate: drop from above with spring
-          const t = spring(age / entranceDuration);
-          const dropFrom = -60; // start 60px above
-          const animY = centerY + dropFrom * (1 - t);
-          // Slight scale
-          const scale = 0.8 + 0.2 * t;
-          Matter.Body.setPosition(pw.body, { x: targetX, y: animY });
-          // Store scale for rendering
-          const d = bodyDataRef.current.get(pw.body.id);
-          if (d) d._scale = scale;
-        } else {
-          // Idle floating: gentle bob with unique phase per word
-          const phase = (pw.appearedAt % 10000) / 10000 * Math.PI * 2; // unique phase
-          const bobY = Math.sin(now / 600 + phase) * 4;
-          const bobRotation = Math.sin(now / 800 + phase * 1.3) * 0.02;
-          Matter.Body.setPosition(pw.body, { x: targetX, y: centerY + bobY });
-          Matter.Body.setAngle(pw.body, bobRotation);
-          const d = bodyDataRef.current.get(pw.body.id);
-          if (d) d._scale = 1;
+        if (rowW > 0 && rowW + gap + pw.bw > maxLineW) {
+          rows.push([]);
+          rowW = 0;
         }
+        rows[rows.length - 1].push(pw);
+        rowW += (rowW > 0 ? gap : 0) + pw.bw;
+      }
 
-        Matter.Body.setAngle(pw.body, 0);
-        x += pw.bw + gap;
+      // Get max row height for vertical spacing
+      const rowHeight = pinned[0]?.bh || 36;
+      const totalH = rows.length * rowHeight + (rows.length - 1) * lineGap;
+      const startY = centerY - totalH / 2 + rowHeight / 2;
+
+      for (let ri = 0; ri < rows.length; ri++) {
+        const row = rows[ri];
+        const rowTotalW = row.reduce((s, pw) => s + pw.bw, 0) + (row.length - 1) * gap;
+        let x = W / 2 - rowTotalW / 2;
+        const rowY = startY + ri * (rowHeight + lineGap);
+
+        for (const pw of row) {
+          const targetX = x + pw.bw / 2;
+          const age = (now - pw.appearedAt) / 1000;
+          const entranceDuration = 0.35;
+
+          if (age < entranceDuration) {
+            const t = spring(age / entranceDuration);
+            const dropFrom = -60;
+            const animY = rowY + dropFrom * (1 - t);
+            const scale = 0.8 + 0.2 * t;
+            Matter.Body.setPosition(pw.body, { x: targetX, y: animY });
+            const d = bodyDataRef.current.get(pw.body.id);
+            if (d) d._scale = scale;
+          } else {
+            const phase = (pw.appearedAt % 10000) / 10000 * Math.PI * 2;
+            const bobY = Math.sin(now / 600 + phase) * 4;
+            const bobRotation = Math.sin(now / 800 + phase * 1.3) * 0.02;
+            Matter.Body.setPosition(pw.body, { x: targetX, y: rowY + bobY });
+            Matter.Body.setAngle(pw.body, bobRotation);
+            const d = bodyDataRef.current.get(pw.body.id);
+            if (d) d._scale = 1;
+          }
+
+          Matter.Body.setAngle(pw.body, 0);
+          x += pw.bw + gap;
+        }
       }
     }
 

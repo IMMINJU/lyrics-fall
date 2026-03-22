@@ -9,6 +9,7 @@ export default function StepPlaying({ videoId, lrcLines, lrcId, songLabel, onBac
   const [syncOffset, setSyncOffset] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [videoHidden, setVideoHidden] = useState(false);
   const playerRef = useRef(null);
   const timeIntervalRef = useRef(null);
 
@@ -68,6 +69,8 @@ export default function StepPlaying({ videoId, lrcLines, lrcId, songLabel, onBac
         videoId={videoId}
         onReady={onPlayerReady}
         onStateChange={onPlayerStateChange}
+        hidden={videoHidden}
+        onToggleHidden={() => setVideoHidden(true)}
       />
       <Controls
         currentTime={currentTime}
@@ -75,6 +78,8 @@ export default function StepPlaying({ videoId, lrcLines, lrcId, songLabel, onBac
         onSyncChange={setSyncOffset}
         onShare={handleShare}
         canShare={!!lrcId}
+        videoHidden={videoHidden}
+        onShowVideo={() => setVideoHidden(false)}
       />
       <button
         onClick={handleBack}
@@ -82,7 +87,7 @@ export default function StepPlaying({ videoId, lrcLines, lrcId, songLabel, onBac
       >
         LyricFall
       </button>
-      <div className="fixed top-5 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 bg-badge-bg text-pill-text rounded-xl text-xs backdrop-blur-lg">
+      <div className="fixed top-5 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 bg-badge-bg text-pill-text rounded-xl text-xs backdrop-blur-lg max-w-[70vw] truncate">
         {songLabel} · {badgeText}
       </div>
     </>

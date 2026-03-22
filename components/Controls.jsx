@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function Controls({ currentTime, syncOffset, onSyncChange, onShare, canShare }) {
+export default function Controls({ currentTime, syncOffset, onSyncChange, onShare, canShare, videoHidden, onShowVideo }) {
   const mins = Math.floor(currentTime / 60);
   const secs = Math.floor(currentTime % 60);
   const [copied, setCopied] = useState(false);
@@ -19,7 +19,7 @@ export default function Controls({ currentTime, syncOffset, onSyncChange, onShar
   };
 
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2.5 bg-bar-bg px-4 py-2 rounded-full backdrop-blur-lg">
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 sm:gap-2.5 bg-bar-bg px-3 sm:px-4 py-2 rounded-full backdrop-blur-lg max-w-[95vw]">
       <span className="text-pill-text text-sm tabular-nums">{mins}:{String(secs).padStart(2, '0')}</span>
       <div className="w-px h-4 bg-bar-divider" />
       <div className="flex items-center gap-1 text-pill-text text-xs">
@@ -28,6 +28,12 @@ export default function Controls({ currentTime, syncOffset, onSyncChange, onShar
         <span className="min-w-9 text-center tabular-nums">{syncOffset > 0 ? '+' : ''}{syncOffset.toFixed(1)}s</span>
         <button className={syncBtn} onClick={() => onSyncChange(syncOffset + 0.5)}>+</button>
       </div>
+      {videoHidden && (
+        <>
+          <div className="w-px h-4 bg-bar-divider" />
+          <button className={pill} onClick={onShowVideo}>Video</button>
+        </>
+      )}
       {canShare && (
         <>
           <div className="w-px h-4 bg-bar-divider" />
