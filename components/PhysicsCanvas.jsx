@@ -61,9 +61,14 @@ export default function PhysicsCanvas({ lrcLines, getCurrentTime, isPlaying, syn
     const resize = () => {
       const c = canvasRef.current;
       if (!c) return;
+      const dpr = window.devicePixelRatio || 1;
       sizeRef.current = { W: window.innerWidth, H: window.innerHeight };
-      c.width = sizeRef.current.W;
-      c.height = sizeRef.current.H;
+      c.width = sizeRef.current.W * dpr;
+      c.height = sizeRef.current.H * dpr;
+      c.style.width = sizeRef.current.W + 'px';
+      c.style.height = sizeRef.current.H + 'px';
+      const ctx = c.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       createWalls();
     };
     resize();
