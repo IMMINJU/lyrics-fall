@@ -1,10 +1,8 @@
 # LyricFall
 
+![demo](public/demo.gif)
+
 Watch synced lyrics fall with real-time physics animation. Paste any YouTube link, search for synced lyrics, and see words come alive.
-
-## Demo
-
-https://github.com/user-attachments/assets/35c08561-3e7f-48d6-9019-28c651130654
 
 ## How it works
 
