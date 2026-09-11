@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 const EXAMPLES = [
-  { label: 'Eminem — Rap God', url: 'https://www.youtube.com/watch?v=XbGs_qK2PQA' },
+  { label: "Oddisee — That's Love", url: 'https://www.youtube.com/watch?v=vjnPHjsVncs' },
   { label: 'Billie Eilish — Birds of a Feather', url: 'https://www.youtube.com/watch?v=d5gf9dXbPi0' },
   { label: 'Adele — Someone Like You', url: 'https://www.youtube.com/watch?v=hLQl3WQQoQ0' },
 ];
